@@ -77,7 +77,7 @@ module.exports = {
  */
 async function checkEmail(email) {
   const user = await User.findOne({ email });
-  return !!user;
+  return user;
 }
 
 module.exports = {
