@@ -69,3 +69,21 @@ module.exports = {
   updateUser,
   deleteUser,
 };
+
+/**
+ * Check email already exists
+ * @param {string} email - Email
+ * @returns {Promise}
+ */
+async function checkEmailExists(email) {
+  return User.findOne({ email });
+}
+
+module.exports = {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  checkEmailExists,
+};
