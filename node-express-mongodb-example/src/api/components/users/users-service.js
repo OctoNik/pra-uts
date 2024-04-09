@@ -118,23 +118,10 @@ module.exports = {
 /**
  * Check email already exists
  * @param {string} email - Email
- * @returns {boolean}
+ * @returns {Promise}
  */
-async function checkEmailExists(email) {
-  const user = await usersRepository.getUser(email);
-
-  // User not found
-  if (!user) {
-    return null;
-  }
-
-  try {
-    await usersRepository.checkEmailExists(email);
-  } catch (err) {
-    return null;
-  }
-
-  return true;
+async function checkEmailExist(email) {
+  return await usersRepository.checkEmail(email);
 }
 
 module.exports = {
@@ -143,5 +130,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  checkEmailExists,
+  checkEmailExist,
 };
