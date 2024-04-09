@@ -75,8 +75,9 @@ module.exports = {
  * @param {string} email - Email
  * @returns {Promise}
  */
-async function checkEmailExists(email) {
-  return User.findOne({ email });
+async function checkEmail(email) {
+  const user = await User.findOne({ email });
+  return !!user;
 }
 
 module.exports = {
@@ -85,5 +86,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  checkEmailExists,
+  checkEmail,
 };
