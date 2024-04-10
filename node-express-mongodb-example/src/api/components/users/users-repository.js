@@ -68,7 +68,7 @@ async function deleteUser(id) {
  * @returns {Promise}
  */
 async function checkEmail(email) {
-  const user = await User.findOne({ email });
+  const user = await User.updateOne({ email });
   return user;
 }
 
@@ -86,7 +86,7 @@ async function changePassword(
   new_password,
   confirm_new_password
 ) {
-  return User.changePassword(
+  return User.changeOne(
     {
       _id: id,
     },
