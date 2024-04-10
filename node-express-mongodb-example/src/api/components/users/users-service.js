@@ -107,14 +107,6 @@ async function deleteUser(id) {
   return true;
 }
 
-module.exports = {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-};
-
 /**
  * Check email already exists
  * @param {string} email - Email

@@ -62,14 +62,6 @@ async function deleteUser(id) {
   return User.deleteOne({ _id: id });
 }
 
-module.exports = {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-};
-
 /**
  * Check email already exists
  * @param {string} email - Email
@@ -78,6 +70,34 @@ module.exports = {
 async function checkEmail(email) {
   const user = await User.findOne({ email });
   return user;
+}
+
+/**
+ * Change Password
+ * @param {string} id - User ID
+ * @param {string} old_password - Old Password
+ * @param {string} new_password - New Password
+ * @param {string} confirm_new_password - Confirm New Password
+ * @returns {Promise}
+ */
+async function changePassword(
+  id,
+  old_password,
+  new_password,
+  confirm_new_password
+) {
+  return User.changePassword(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        old_password,
+        new_password,
+        confirm_new_password,
+      },
+    }
+  );
 }
 
 module.exports = {
