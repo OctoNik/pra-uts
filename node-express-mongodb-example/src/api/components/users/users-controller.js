@@ -55,7 +55,7 @@ async function createUser(request, response, next) {
     if (emailExist) {
       throw errorResponder(
         errorTypes.EMAIL_ALREADY_TAKEN,
-        'This email already taken, try use another'
+        'This email already taken'
       );
     }
 
