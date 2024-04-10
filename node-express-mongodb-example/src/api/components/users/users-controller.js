@@ -141,10 +141,49 @@ async function deleteUser(request, response, next) {
   }
 }
 
+/**
+ * Change Password
+ * @param {object} request - Express request object
+ * @param {object} response - Express response object
+ * @param {object} next - Express route middlewares
+ * @returns {object} Response object or pass an error to the next route
+ */
+async function changePassword(request, response, next) {
+  try {
+    const id = request.params.id;
+    const old_password = request.body.old_password;
+    const new_password = request.body.new_password;
+    const confirm_new_password = request.body.confirm_new_password;
+
+    const success = await usersService.changePassword(
+      id,
+      old_password,
+      new_password,
+      confirm_new_password
+    );
+    if (success === false) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'Old password or new passwords do not match'
+      );
+    } else if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to update password'
+      );
+    }
+
+    return response.status(200).json({ id });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  changePassword,
 };
