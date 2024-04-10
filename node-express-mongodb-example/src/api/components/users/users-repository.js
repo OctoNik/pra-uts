@@ -68,34 +68,23 @@ async function deleteUser(id) {
  * @returns {Promise}
  */
 async function checkEmail(email) {
-  const user = await User.updateOne({ email });
+  const user = await User.findOne({ email });
   return user;
 }
 
 /**
  * Change Password
  * @param {string} id - User ID
- * @param {string} old_password - Old Password
  * @param {string} new_password - New Password
- * @param {string} confirm_new_password - Confirm New Password
  * @returns {Promise}
  */
-async function changePassword(
-  id,
-  old_password,
-  new_password,
-  confirm_new_password
-) {
-  return User.changeOne(
+async function changePassword(id, new_password) {
+  return User.updateOne(
     {
       _id: id,
     },
     {
-      $set: {
-        old_password,
-        new_password,
-        confirm_new_password,
-      },
+      $set: { password: new_password },
     }
   );
 }
@@ -107,4 +96,5 @@ module.exports = {
   updateUser,
   deleteUser,
   checkEmail,
+  changePassword,
 };
