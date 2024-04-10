@@ -1,5 +1,5 @@
 const usersRepository = require('./users-repository');
-const { hashPassword } = require('../../../utils/password');
+const { hashPassword, passwordMatched } = require('../../../utils/password');
 
 /**
  * Get list of users
@@ -137,13 +137,19 @@ async function changePassword(
     return null;
   }
 
+  const passwordValid = await passwordMatched(old_password, user.password);
+  if (!passwordValid) {
+    return false;
+  }
+
+  if (new_password !== confirm_new_password) {
+    return false;
+  }
+
+  const hashedPassword = await hashPassword(new_password);
+
   try {
-    await usersRepository.changePassword(
-      id,
-      old_password,
-      new_password,
-      confirm_new_password
-    );
+    await usersRepository.changePassword(id, hashedPassword);
   } catch (err) {
     return null;
   }
@@ -158,4 +164,5 @@ module.exports = {
   updateUser,
   deleteUser,
   checkEmailExist,
+  changePassword,
 };
