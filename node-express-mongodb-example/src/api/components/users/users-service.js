@@ -116,6 +116,41 @@ async function checkEmailExist(email) {
   return await usersRepository.checkEmail(email);
 }
 
+/**
+ * Change Password
+ * @param {string} id - User ID
+ * @param {string} old_password - Old Password
+ * @param {string} new_password - New Password
+ * @param {string} confirm_new_password - Confirm New Password
+ * @returns {boolean}
+ */
+async function changePassword(
+  id,
+  old_password,
+  new_password,
+  confirm_new_password
+) {
+  const user = await usersRepository.getUser(id);
+
+  // User not found
+  if (!user) {
+    return null;
+  }
+
+  try {
+    await usersRepository.changePassword(
+      id,
+      old_password,
+      new_password,
+      confirm_new_password
+    );
+  } catch (err) {
+    return null;
+  }
+
+  return true;
+}
+
 module.exports = {
   getUsers,
   getUser,
