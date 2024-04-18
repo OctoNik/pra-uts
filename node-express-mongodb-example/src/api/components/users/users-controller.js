@@ -1,4 +1,6 @@
 const usersService = require('./users-service');
+const usersRepository = require('./users-repository');
+const { checkPasswordStrength } = require('./users-repository');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
@@ -51,6 +53,14 @@ async function createUser(request, response, next) {
     const email = request.body.email;
     const password = request.body.password;
     const passwordConfirm = request.body.password_confirm;
+
+    // Pengecekan kekuatan password
+    if (!checkPasswordStrength(password)) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'New password must contain at least one uppercase letter, one lowercase letter, one symbol, one digit, and be at least 8 characters long'
+      );
+    }
 
     if (password !== passwordConfirm) {
       throw errorResponder(
@@ -155,12 +165,21 @@ async function changePassword(request, response, next) {
     const new_password = request.body.new_password;
     const confirm_new_password = request.body.confirm_new_password;
 
+    // Pengecekan kekuatan password
+    if (!checkPasswordStrength(new_password)) {
+      throw errorResponder(
+        errorTypes.INVALID_PASSWORD,
+        'New password must contain at least one uppercase letter, one lowercase letter, one symbol, one digit, and be at least 8 characters long'
+      );
+    }
+
     const success = await usersService.changePassword(
       id,
       old_password,
       new_password,
       confirm_new_password
     );
+
     if (success === false) {
       throw errorResponder(
         errorTypes.INVALID_PASSWORD,
