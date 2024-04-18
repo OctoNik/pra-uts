@@ -89,6 +89,18 @@ async function changePassword(id, new_password) {
   );
 }
 
+/**
+ * Check Password Strength
+ * @param {string} password
+ * @returns {boolean}
+ */
+function checkPasswordStrength(password) {
+  // Buat regex untuk memeriksa kombinasi huruf besar, huruf kecil, simbol, dan angka
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return regex.test(password);
+}
+
 module.exports = {
   getUsers,
   getUser,
@@ -97,4 +109,5 @@ module.exports = {
   deleteUser,
   checkEmail,
   changePassword,
+  checkPasswordStrength,
 };
